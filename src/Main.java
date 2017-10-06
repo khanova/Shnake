@@ -1,11 +1,13 @@
 import com.sun.deploy.util.SyncAccess;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
+    private static final String directions = "sdwa";
+
     public static void printField(Field field) {
+        System.out.println();
         ArrayList<ArrayList<Entity>> rectangle = field.toRectangle();
         for (ArrayList<Entity> line: rectangle) {
             for (Entity entity: line) {
@@ -21,16 +23,12 @@ public class Main {
             }
             System.out.println();
         }
-        System.out.println();
     }
 
     public static void main(String[] args) {
         Field field = new Field(5, 5, true);
-        field.addEntity(new Snake(new Point(1, 2), 0, field));
-        field.addEntity(new Apple(new Point(0, 2), field));
-        field.addEntity(new Apple(new Point(2, 2), field));
-        field.addEntity(new Apple(new Point(3, 2), field));
-        field.addEntity(new Apple(new Point(4, 2), field));
+        Snake snake = field.spawnSnake(new Point(1, 2), 0);
+        field.spawnRandomApple();
         printField(field);
 
         Timer timer = new Timer();
@@ -44,5 +42,23 @@ public class Main {
                 printField(field);
             }
         }, 1000, 1000);
+
+        int code;
+        while (!field.getLost()) {
+            try {
+                code = System.in.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
+            if (code != -1) {
+                char c = (char) code;
+                for (int i = 0; i < directions.length(); ++i){
+                    if (directions.charAt(i) == c) {
+                        snake.SetDirection(i);
+                    }
+                }
+            }
+        }
     }
 }

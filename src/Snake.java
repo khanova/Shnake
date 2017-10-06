@@ -22,10 +22,13 @@ public class Snake extends Entity {
         return result;
     }
 
-    public int SetDirection(int dir) {
-        if (0 <= dir && dir < 4)
-            direction = dir;
-        throw new IllegalArgumentException();
+    public boolean SetDirection(int dir) {
+        if (!(0 <= dir && dir < 4))
+            throw new IllegalArgumentException();
+        if ((direction + 2) % 4 == dir)
+            return false;
+        direction = dir;
+        return true;
     }
 
     public void tick() {
@@ -38,20 +41,27 @@ public class Snake extends Entity {
         }
 
         Entity entity = field.entityAtPoint(head);
+        boolean spawnApple = false;
+
         if (!head.equals(body.get(body.size() - 1)) &&
                 entity instanceof Snake) {
             field.lose();
         }
         else if (entity instanceof Apple) {
             field.removeEntity(entity);
+            spawnApple = true;
         }
         else {
             body.remove(body.size() - 1);
         }
+
         body.add(0, head);
         field.removeEntity(this);
         position = head;
         field.addEntity(this);
+
+        if (spawnApple)
+            field.spawnRandomApple();
     }
 
     public boolean isOccupied(Point pos) {

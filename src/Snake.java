@@ -33,6 +33,8 @@ public class Snake extends Entity {
 
     public void tick() {
         Point head = position.add(Point.OFFSET[direction]);
+        System.out.println(head.x);
+        System.out.println(head.y);
         if (field.getWrap()) {
             head = field.wrapPoint(head);
         }

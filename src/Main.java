@@ -1,7 +1,8 @@
-import com.sun.deploy.util.SyncAccess;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Main {
     private static final String directions = "sdwa";
@@ -24,6 +25,10 @@ public class Main {
             System.out.println();
         }
     }
+
+
+
+
 
     public static void main(String[] args) {
         Field field = new Field(5, 5, true);

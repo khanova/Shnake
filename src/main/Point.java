@@ -1,3 +1,5 @@
+package main;
+
 public class Point {
     static final Point[] OFFSET = {
             new Point(1, 0),

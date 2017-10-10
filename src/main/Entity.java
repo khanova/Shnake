@@ -1,3 +1,5 @@
+package main;
+
 import java.util.ArrayList;
 
 abstract public class Entity implements ITickable {

@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,12 +36,9 @@ public class Board extends JPanel implements ActionListener {
          field.spawnRandomApple();
          timer = new Timer(DELAY, this);
          timer.start();
-
-
     }
 
     private void loadImages() {
-
         ImageIcon ii = new ImageIcon("src/images/head.png");
         head = ii.getImage();
         ii = new ImageIcon("src/images/apple.png");
@@ -53,10 +52,10 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        doDriwing(g);
+        doDrawing(g);
     }
 
-    private void doDriwing(Graphics g) {
+    private void doDrawing(Graphics g) {
         if (!field.getLost())
         {
             ArrayList<ArrayList<Entity>> rectangle = field.toRectangle();
@@ -74,7 +73,6 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
             g.drawImage(head, snake.position.x * 100, snake.position.y * 100, this);
-
         }
     }
 
@@ -93,7 +91,7 @@ public class Board extends JPanel implements ActionListener {
 
             for (int i = 0; i < directions.length; ++i){
                     if (directions[i] == key) {
-                        snake.SetDirection(i);
+                        snake.setDirection(i);
                     }
                 }
         }

@@ -1,3 +1,5 @@
+package main;
+
 public class Apple extends Entity {
     private Field field;
 

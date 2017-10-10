@@ -1,10 +1,12 @@
+package main;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Main {
+public class Console {
     private static final String directions = "sdwa";
 
     public static void printField(Field field) {
@@ -60,7 +62,7 @@ public class Main {
                 char c = (char) code;
                 for (int i = 0; i < directions.length(); ++i){
                     if (directions.charAt(i) == c) {
-                        snake.SetDirection(i);
+                        snake.setDirection(i);
                     }
                 }
             }

@@ -1,9 +1,12 @@
+package main;
+
 import java.util.ArrayList;
 
 public class Snake extends Entity {
     private ArrayList<Point> body;
 
     private int direction;
+    private int lastDirection;
 
     private Field field;
 
@@ -12,6 +15,7 @@ public class Snake extends Entity {
         body = new ArrayList<>();
         body.add(pos);
         direction = dir;
+        lastDirection = dir;
         this.field = field;
     }
 
@@ -22,16 +26,26 @@ public class Snake extends Entity {
         return result;
     }
 
-    public boolean SetDirection(int dir) {
+    public boolean setDirection(int dir) {
         if (!(0 <= dir && dir < 4))
             throw new IllegalArgumentException();
-        if ((direction + 2) % 4 == dir)
+        if ((lastDirection + 2) % 4 == dir)
             return false;
         direction = dir;
         return true;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
+    public int getLastDirection() {
+        return lastDirection;
+    }
+
     public void tick() {
+        lastDirection = direction;
+
         Point head = position.add(Point.OFFSET[direction]);
         if (field.getWrap()) {
             head = field.wrapPoint(head);
@@ -49,6 +63,7 @@ public class Snake extends Entity {
         }
         else if (entity instanceof Apple) {
             field.removeEntity(entity);
+            field.setPoints(field.getPoints() + 1);
             spawnApple = true;
         }
         else {

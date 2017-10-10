@@ -1,10 +1,8 @@
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Field implements ITickable {
+public class Field  implements ITickable {
     private HashMap<Point, Entity> entities;
     private int width;
     private int height;
@@ -37,9 +35,7 @@ public class Field implements ITickable {
         return wrap;
     }
 
-    public int getPoints() {
-        return points;
-    }
+    public int getPoints() { return points; }
 
     public void setPoints(int points) {
         if (points < 0)

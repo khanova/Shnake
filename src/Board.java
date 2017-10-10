@@ -14,7 +14,7 @@ public class Board extends JPanel implements ActionListener {
     private static final int DELAY = 500;
     private Snake snake;
 
-    private Image head, apple;
+    private Image head, apple, body, grass;
     private Field field;
     private Timer timer;
 
@@ -44,6 +44,10 @@ public class Board extends JPanel implements ActionListener {
         head = ii.getImage();
         ii = new ImageIcon("src/images/apple.png");
         apple = ii.getImage();
+        ii = new ImageIcon("src/images/body.png");
+        body = ii.getImage();
+        ii = new ImageIcon("src/images/field.png");
+        grass = ii.getImage();
     }
 
     @Override
@@ -56,17 +60,20 @@ public class Board extends JPanel implements ActionListener {
         if (!field.getLost())
         {
             ArrayList<ArrayList<Entity>> rectangle = field.toRectangle();
+
             for (int x = 0; x < rectangle.size(); ++x) {
                 for (int y = 0; y < rectangle.get(x).size(); ++y) {
                     Entity entity = rectangle.get(x).get(y);
+                    g.drawImage(grass, x * 100, y * 100, this);
                     if (entity instanceof Snake) {
-                        g.drawImage(head, x * 100, y * 100, this);
+                        g.drawImage(body, x * 100, y * 100, this);
                     }
                     else if (entity instanceof Apple) {
                         g.drawImage(apple, x * 100, y * 100, this);
                     }
                 }
             }
+            g.drawImage(head, snake.position.x * 100, snake.position.y * 100, this);
 
         }
     }

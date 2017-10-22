@@ -16,26 +16,31 @@ public class Board extends JPanel implements ActionListener {
     private static final int DELAY = 500;
     private Snake snake;
 
+    private int tileWidth;
+    private int tileHeight;
+
     private Image head, apple, body, grass;
     private Field field;
     private Timer timer;
 
     public Board() {
         addKeyListener(new TAdapter());
-        setBackground(Color.white);
+        setBackground(Color.black);
         setFocusable(true);
 
-        setPreferredSize(new Dimension(1000, 1000));
-        loadImages();
         initBoard();
+        loadImages();
     }
 
     private void initBoard() {
+        tileWidth = 100;
+        tileHeight = 100;
          field = new Field(5, 5, true);
          snake = field.spawnSnake(new Point(1, 2), 0);
          field.spawnRandomApple();
          timer = new Timer(DELAY, this);
          timer.start();
+         setPreferredSize(new Dimension(100 * field.getWidth(), 100 * field.getHeight()));
     }
 
     private void loadImages() {
@@ -63,17 +68,24 @@ public class Board extends JPanel implements ActionListener {
             for (int x = 0; x < rectangle.size(); ++x) {
                 for (int y = 0; y < rectangle.get(x).size(); ++y) {
                     Entity entity = rectangle.get(x).get(y);
-                    g.drawImage(grass, x * 100, y * 100, this);
                     if (entity instanceof Snake) {
-                        g.drawImage(body, x * 100, y * 100, this);
+                        drawImage(body, x, y, g);
                     }
                     else if (entity instanceof Apple) {
-                        g.drawImage(apple, x * 100, y * 100, this);
+                        drawImage(apple, x, y, g);
                     }
+                    else
+                        drawImage(grass, x, y, g);
                 }
             }
-            g.drawImage(head, snake.position.x * 100, snake.position.y * 100, this);
+            drawImage(head, snake.getX(), snake.getY(), g);
         }
+    }
+
+
+    void drawImage(Image image, int x, int y, Graphics g)
+    {
+        g.drawImage(image, x * tileWidth, y * tileHeight, this);
     }
 
     @Override

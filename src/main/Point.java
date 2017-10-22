@@ -8,12 +8,21 @@ public class Point {
             new Point(0, -1)
     };
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
 
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getX()
+    {
+        return  x;
+    }
+    public int getY()
+    {
+        return y;
     }
 
     @Override
@@ -32,4 +41,5 @@ public class Point {
     public int hashCode() {
         return (x << 15) | y;
     }
+
 }

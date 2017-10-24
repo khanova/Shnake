@@ -1,7 +1,7 @@
 package main;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,8 +11,8 @@ public class Console {
 
     public static void printField(Field field) {
         System.out.println();
-        ArrayList<ArrayList<Entity>> rectangle = field.toRectangle();
-        for (ArrayList<Entity> line: rectangle) {
+        List<List<Entity>> rectangle = field.toRectangle();
+        for (List<Entity> line: rectangle) {
             for (Entity entity: line) {
                 if (entity == null) {
                     System.out.print('.');

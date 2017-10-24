@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -25,7 +25,7 @@ public class Board extends JPanel implements ActionListener {
         setBackground(Color.white);
         setFocusable(true);
 
-        setPreferredSize(new Dimension(1000, 1000));
+        setPreferredSize(new Dimension(500, 500));
         loadImages();
         initBoard();
     }
@@ -58,7 +58,7 @@ public class Board extends JPanel implements ActionListener {
     private void doDrawing(Graphics g) {
         if (!field.getLost())
         {
-            ArrayList<ArrayList<Entity>> rectangle = field.toRectangle();
+            List<List<Entity>> rectangle = field.toRectangle();
 
             for (int x = 0; x < rectangle.size(); ++x) {
                 for (int y = 0; y < rectangle.get(x).size(); ++y) {
@@ -83,10 +83,8 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private class TAdapter extends KeyAdapter {
-
         @Override
         public void keyPressed(KeyEvent e) {
-
             int key = e.getKeyCode();
 
             for (int i = 0; i < directions.length; ++i){

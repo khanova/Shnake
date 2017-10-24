@@ -1,5 +1,6 @@
 package main;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -68,7 +69,7 @@ public class Field  implements ITickable {
     }
 
     public void tick() {
-        ArrayList<Entity> allEntities = new ArrayList<>();
+        List<Entity> allEntities = new ArrayList<>();
         allEntities.addAll(entities.values());
         for (Entity entity: allEntities) {
             entity.tick();
@@ -111,10 +112,10 @@ public class Field  implements ITickable {
         return true;
     }
 
-    public ArrayList<ArrayList<Entity>> toRectangle() {
-        ArrayList<ArrayList<Entity>> result = new ArrayList<>();
+    public List<List<Entity>> toRectangle() {
+        List<List<Entity>> result = new ArrayList<>();
         for (int x = 0; x < width; ++x) {
-            ArrayList<Entity> line = new ArrayList<>();
+            List<Entity> line = new ArrayList<>();
             for (int y = 0; y < height; ++y) {
                 line.add(entityAtPoint(new Point(x, y)));
             }
@@ -140,10 +141,10 @@ public class Field  implements ITickable {
     }
 
     public Apple spawnRandomApple() {
-        ArrayList<Point> choices = new ArrayList<>();
-        ArrayList<ArrayList<Entity>> rectangle = toRectangle();
+        List<Point> choices = new ArrayList<>();
+        List<List<Entity>> rectangle = toRectangle();
         for (int i = 0; i < rectangle.size(); ++i) {
-            ArrayList<Entity> row = rectangle.get(i);
+            List<Entity> row = rectangle.get(i);
             for (int j = 0; j < row.size(); ++j) {
                 if (row.get(j) == null) {
                     choices.add(new Point(i, j));

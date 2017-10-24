@@ -1,5 +1,6 @@
 package main;
 
+import java.util.List;
 import java.util.ArrayList;
 
 abstract public class Entity implements ITickable {
@@ -9,8 +10,8 @@ abstract public class Entity implements ITickable {
         return position;
     }
 
-    public ArrayList<Point> allPositions() {
-        ArrayList<Point> result = new ArrayList<>();
+    public List<Point> allPositions() {
+        List<Point> result = new ArrayList<>();
         result.add(position);
         return result;
     }

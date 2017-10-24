@@ -1,9 +1,10 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Snake extends Entity {
-    private ArrayList<Point> body;
+    private List<Point> body;
 
     private int direction;
     private int lastDirection;
@@ -20,8 +21,8 @@ public class Snake extends Entity {
     }
 
     @Override
-    public ArrayList<Point> allPositions() {
-        ArrayList<Point> result = new ArrayList<>();
+    public List<Point> allPositions() {
+        List<Point> result = new ArrayList<>();
         result.addAll(body);
         return result;
     }

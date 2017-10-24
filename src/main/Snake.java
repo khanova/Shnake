@@ -1,5 +1,6 @@
 package main;
 
+import java.security.AlgorithmConstraints;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class Snake extends Entity {
 
     private int direction;
     private int lastDirection;
+    private int growth;
 
     private Field field;
 
@@ -17,6 +19,7 @@ public class Snake extends Entity {
         body.add(pos);
         direction = dir;
         lastDirection = dir;
+        growth = 0;
         this.field = field;
     }
 
@@ -52,6 +55,14 @@ public class Snake extends Entity {
         return result;
     }
 
+    public int getGrowth() {
+        return growth;
+    }
+
+    public void setGrowth(int value) {
+        growth = value;
+    }
+
     public void tick() {
         lastDirection = direction;
 
@@ -66,18 +77,24 @@ public class Snake extends Entity {
         Entity entity = field.entityAtPoint(head);
         boolean spawnApple = false;
 
-        if (!head.equals(body.get(body.size() - 1)) &&
-                entity instanceof Snake) {
+        if (!head.equals(body.get(body.size() - 1)) && entity instanceof Snake) {
             field.lose();
         }
         else if (entity instanceof Apple) {
+            ((Apple)entity).eatEffect(this);
             field.removeEntity(entity);
-            field.setPoints(field.getPoints() + 1);
             spawnApple = true;
         }
-        else {
-            body.remove(body.size() - 1);
+
+
+        if (getGrowth() <= 0) {
+            for (int i = 0; i < 1 - getGrowth() && body.size() > 0; i++) {
+                body.remove(body.size() - 1);
+            }
+            setGrowth(0);
         }
+        else
+            setGrowth(getGrowth() - 1);
 
         body.add(0, head);
         field.removeEntity(this);

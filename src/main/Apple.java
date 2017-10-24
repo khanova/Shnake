@@ -1,11 +1,16 @@
 package main;
 
 public class Apple extends Entity {
-    private Field field;
+    protected Field field;
 
     public Apple(Point pos, Field field) {
         position = pos;
         this.field = field;
+    }
+
+    public void eatEffect(Snake snake) {
+        snake.setGrowth(snake.getGrowth() + 1);
+        field.setPoints(field.getPoints() + 1);
     }
 
     public void tick() {

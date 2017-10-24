@@ -155,7 +155,13 @@ public class Field  implements ITickable {
         if (choices.isEmpty())
             return null;
         int index = random.nextInt(choices.size());
-        Apple apple = new Apple(choices.get(index), this);
+        Apple apple;
+        if (random.nextInt(2) == 0) {
+            apple = new Apple(choices.get(index), this);
+        }
+        else {
+            apple = new AppleBig(choices.get(index), this);
+        }
         addEntity(apple);
         return apple;
     }

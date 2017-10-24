@@ -11,4 +11,9 @@ public class Apple extends Entity {
     public void tick() {
 
     }
+
+    @Override
+    public Sprite createSprite() {
+        return new AppleSprite(this);
+    }
 }

@@ -27,4 +27,6 @@ abstract public class Entity implements ITickable {
     }
 
     abstract public void tick();
+
+    abstract public Sprite createSprite();
 }

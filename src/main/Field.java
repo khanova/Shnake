@@ -159,4 +159,30 @@ public class Field  implements ITickable {
         addEntity(apple);
         return apple;
     }
+
+    public List<Entity> getAllEntities() {
+        List<Entity> result = new ArrayList<>();
+        result.addAll(entities.values());
+        return result;
+    }
+
+    public List<Entity> getAllSnakes() {
+        List<Entity> result = new ArrayList<>();
+        for (Entity entity: entities.values()) {
+            if (entity instanceof Snake) {
+                result.add(entity);
+            }
+        }
+        return result;
+    }
+
+    public List<Entity> getAllApples() {
+        List<Entity> result = new ArrayList<>();
+        for (Entity entity: entities.values()) {
+            if (entity instanceof Apple) {
+                result.add(entity);
+            }
+        }
+        return result;
+    }
 }

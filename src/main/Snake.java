@@ -44,6 +44,14 @@ public class Snake extends Entity {
         return lastDirection;
     }
 
+    public List<Point> getBody() {
+        List<Point> result = new ArrayList<>();
+        for (int i = 1; i < body.size(); ++i) {
+            result.add(body.get(i));
+        }
+        return result;
+    }
+
     public void tick() {
         lastDirection = direction;
 
@@ -89,11 +97,16 @@ public class Snake extends Entity {
     }
 
     public boolean isIntersecting() {
-        for (int i = 1; i < body.size(); ++i) {
-            if (body.get(i).equals(position)) {
+        for (Point point: getBody()) {
+            if (point.equals(position)) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public Sprite createSprite() {
+        return new SnakeSprite(this);
     }
 }

@@ -1,9 +1,14 @@
 package main;
 
-public class Sprite {
-    private Entity entity;
+import java.awt.*;
+
+abstract public class Sprite {
+    protected Entity entity;
+
     public Entity getEntity()
     {
         return entity;
     }
+
+    abstract void draw(Graphics g, Board board);
 }

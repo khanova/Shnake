@@ -16,5 +16,15 @@ abstract public class Entity implements ITickable {
         return result;
     }
 
+    public int getX()
+    {
+        return position.getX();
+    }
+
+    public int getY()
+    {
+        return position.getY();
+    }
+
     abstract public void tick();
 }

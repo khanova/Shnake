@@ -55,17 +55,18 @@ public class Field  implements ITickable {
     }
 
     public boolean isInside(Point point) {
-        return 0 <= point.x && point.x < width &&
-                0 <= point.y && point.y < height;
+        return 0 <= point.getX() && point.getX() < width &&
+                0 <= point.getY() && point.getY() < height;
     }
 
     public Point wrapPoint(Point point) {
-        Point result = new Point(point.x % width, point.y % height);
-        if (result.x < 0)
-            result.x += width;
-        if (result.y < 0)
-            result.y += height;
-        return result;
+        int x = point.getX() % width;
+        int y = point.getY() % height;
+        if (x < 0)
+            x += width;
+        if (y < 0)
+            y += height;
+        return new Point(x, y);
     }
 
     public void tick() {

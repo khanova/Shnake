@@ -30,6 +30,11 @@ public class Snake extends Entity {
         return result;
     }
 
+    public int length()
+    {
+        return allPositions().size();
+    }
+
     public boolean setDirection(int dir) {
         if (!(0 <= dir && dir < 4))
             throw new IllegalArgumentException();

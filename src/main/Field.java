@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.function.BiFunction;
 
 public class Field  implements ITickable {
     private HashMap<Point, Entity> entities;
@@ -133,10 +134,10 @@ public class Field  implements ITickable {
         return snake;
     }
 
-    public Apple spawnApple(Point position) {
+    public Apple spawnApple(Point position, BiFunction<Point, Field, Apple> init) {
         if (!isInside(position) || hasEntityAtPoint(position))
             throw new IllegalArgumentException();
-        Apple apple = Apple.randomApple(random, position, this);
+        Apple apple = init.apply(position, this);
         addEntity(apple);
         return apple;
     }

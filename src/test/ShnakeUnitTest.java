@@ -65,7 +65,7 @@ public class ShnakeUnitTest {
     @Test
     public void testFieldWithApple() {
         Field field = new Field(4, 6, false);
-        Apple apple = field.spawnApple(new Point(2, 1));
+        Apple apple = field.spawnApple(new Point(2, 1), Apple::new);
         assertTrue(field.hasEntityAtPoint(new Point(2, 1)));
         assertFalse(field.hasEntityAtPoint(new Point(1, 2)));
         assertSame(apple, field.entityAtPoint(new Point(2, 1)));
@@ -129,12 +129,10 @@ public class ShnakeUnitTest {
     public void testEatApple() {
         Field field = new Field(4, 6, false);
         Snake snake = field.spawnSnake(new Point(0, 3), 3);
-        Apple apple = field.spawnApple(new Point(0, 2));
+        Apple apple = field.spawnApple(new Point(0, 2), Apple::new);
         field.tick();
         assertTrue(field.hasEntityAtPoint(new Point(0, 2)));
         assertTrue(field.hasEntityAtPoint(new Point(0, 3)));
-        assertFalse(field.hasEntityAtPoint(new Point(0, 1)));
-        assertFalse(field.hasEntityAtPoint(new Point(0, 4)));
         assertSame(snake, field.entityAtPoint(new Point(0, 2)));
         assertSame(snake, field.entityAtPoint(new Point(0, 3)));
         assertEquals(new Point(0, 2), snake.getPosition());
@@ -154,5 +152,43 @@ public class ShnakeUnitTest {
         assertEquals(new Point(1, 0), snake.getPosition());
         assertEquals(3, snake.getDirection());
         assertEquals(3, snake.getLastDirection());
+    }
+
+    @Test
+    public void testEatAppleBig() {
+        Field field = new Field(10, 10, false);
+        Snake snake = field.spawnSnake(new Point(0, 0), 0);
+        Apple apple = field.spawnApple(new Point(1, 0), AppleBig::new);
+        field.tick();
+        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
+        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
+        assertEquals(snake.getGrowth(), 1);
+        assertEquals(field.getPoints(), 2);
+        field.tick();
+        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
+        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
+        assertTrue(field.hasEntityAtPoint(new Point(2, 0)));
+        assertSame(snake, field.entityAtPoint(new Point(0, 0)));
+        assertSame(snake, field.entityAtPoint(new Point(1, 0)));
+        assertSame(snake, field.entityAtPoint(new Point(2, 0)));
+    }
+
+    @Test
+    public void testEatApplePoison() {
+        Field field = new Field(10, 10, false);
+        Snake snake = field.spawnSnake(new Point(0, 0), 0);
+        Apple apple = field.spawnApple(new Point(9, 0), AppleBig::new);
+        for (int i = 0; i < 8; ++i)
+            field.tick();
+        assertTrue(field.hasEntityAtPoint(new Point(8, 0)));
+        assertTrue(field.hasEntityAtPoint(new Point(9, 0)));
+        assertSame(snake, field.entityAtPoint(new Point(8, 0)));
+        assertNotSame(snake, field.entityAtPoint(new Point(9, 0)));
+        field.tick();
+        assertTrue(field.hasEntityAtPoint(new Point(9, 0)));
+        assertSame(snake, field.entityAtPoint(new Point(9, 0)));
+        assertEquals(snake.getGrowth(), 0);
+        assertEquals(snake.length(), 1);
+        assertEquals(field.getPoints(), -1);
     }
 }

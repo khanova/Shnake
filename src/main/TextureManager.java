@@ -19,7 +19,7 @@ public class TextureManager {
         grass = ii.getImage();
         ii = new ImageIcon("src/images/applePoison.png");
         applePoison = ii.getImage();
-        ii = new ImageIcon("src/images/applePoison.png");
+        ii = new ImageIcon("src/images/wall.png");
         wall = ii.getImage();
     }
 

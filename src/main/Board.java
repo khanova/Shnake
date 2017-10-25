@@ -8,8 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -39,9 +37,11 @@ public class Board extends JPanel implements ActionListener {
         tileHeight = 100;
 
         field = new Field(5, 5, true);
-        snake = field.spawnSnake(new Point(1, 2), 0);
-        field.spawnRandomApple();
+        snake = field.spawnSnake(new Point(0, 0), 0);
 
+        field.spawnApple(new Point(2, 2), Wall::new);
+
+        field.spawnRandomApple();
         textureManager = new TextureManager();
         sprites = new ArrayList<>();
 

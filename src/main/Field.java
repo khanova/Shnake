@@ -136,7 +136,7 @@ public class Field  implements ITickable {
     public Apple spawnApple(Point position) {
         if (!isInside(position) || hasEntityAtPoint(position))
             throw new IllegalArgumentException();
-        Apple apple = new Apple(position, this);
+        Apple apple = Apple.randomApple(random, position, this);
         addEntity(apple);
         return apple;
     }
@@ -155,13 +155,7 @@ public class Field  implements ITickable {
         if (choices.isEmpty())
             return null;
         int index = random.nextInt(choices.size());
-        Apple apple;
-        if (random.nextInt(2) == 0) {
-            apple = new Apple(choices.get(index), this);
-        }
-        else {
-            apple = new AppleBig(choices.get(index), this);
-        }
+        Apple apple = Apple.randomApple(random, choices.get(index), this);
         addEntity(apple);
         return apple;
     }

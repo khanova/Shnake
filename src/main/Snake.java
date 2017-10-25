@@ -77,7 +77,8 @@ public class Snake extends Entity {
         Entity entity = field.entityAtPoint(head);
         boolean spawnApple = false;
 
-        if (!head.equals(body.get(body.size() - 1)) && entity instanceof Snake) {
+        if (entity instanceof Snake &&
+                !(head.equals(body.get(body.size() - 1)) && getGrowth() <= 0)) {
             field.lose();
         }
         else if (entity instanceof Apple) {
@@ -86,23 +87,24 @@ public class Snake extends Entity {
             spawnApple = true;
         }
 
-
         if (getGrowth() <= 0) {
             for (int i = 0; i < 1 - getGrowth() && body.size() > 0; i++) {
                 body.remove(body.size() - 1);
             }
             setGrowth(0);
         }
-        else
+        else {
             setGrowth(getGrowth() - 1);
+        }
 
         body.add(0, head);
         field.removeEntity(this);
         position = head;
         field.addEntity(this);
 
-        if (spawnApple)
+        if (spawnApple) {
             field.spawnRandomApple();
+        }
     }
 
     public boolean isOccupied(Point pos) {

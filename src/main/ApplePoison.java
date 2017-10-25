@@ -15,6 +15,6 @@ public class ApplePoison extends Apple {
 
     @Override
     public Sprite createSprite() {
-        return new AppleBigSprite(this);
+        return new ApplePoisonSprite(this);
     }
 }

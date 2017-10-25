@@ -1,6 +1,5 @@
 package main;
 
-import java.security.AlgorithmConstraints;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +27,11 @@ public class Snake extends Entity {
         List<Point> result = new ArrayList<>();
         result.addAll(body);
         return result;
+    }
+
+    public int length()
+    {
+        return allPositions().size();
     }
 
     public boolean setDirection(int dir) {

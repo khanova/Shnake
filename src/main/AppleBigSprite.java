@@ -5,8 +5,7 @@ import java.awt.*;
 public class AppleBigSprite extends Sprite {
     protected Apple entity;
 
-    public AppleBigSprite(Apple apple)
-    {
+    public AppleBigSprite(Apple apple) {
         entity = apple;
     }
 

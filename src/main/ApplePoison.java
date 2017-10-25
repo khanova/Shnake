@@ -7,7 +7,7 @@ public class ApplePoison extends Apple {
 
     public void eatEffect(Snake snake) {
         snake.setGrowth(snake.getGrowth() - 1);
-        field.setPoints(field.getPoints() - 1);
+        field.setPoints(field.getPoints() - 2);
     }
 
     public void tick() {

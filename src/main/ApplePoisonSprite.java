@@ -10,6 +10,7 @@ public class ApplePoisonSprite extends Sprite {
 
     @Override
     void draw(Graphics g, Board board) {
-        
+        TextureManager tm = board.getTextureManager();
+        board.drawImage(tm.getApplePoison(), entity.getX(), entity.getY(), g);
     }
 }

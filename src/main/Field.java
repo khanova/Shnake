@@ -42,8 +42,6 @@ public class Field  implements ITickable {
     public int getPoints() { return points; }
 
     public void setPoints(int points) {
-        if (points < 0)
-            throw new IllegalArgumentException();
         this.points = points;
     }
 

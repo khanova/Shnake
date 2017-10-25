@@ -191,4 +191,13 @@ public class ShnakeUnitTest {
         assertEquals(snake.length(), 1);
         assertEquals(field.getPoints(), -1);
     }
+
+    @Test
+    public void testEatWall() {
+        Field field = new Field(10, 10, false);
+        Snake snake = field.spawnSnake(new Point(0, 0), 0);
+        Apple apple = field.spawnApple(new Point(1, 0), Wall::new);
+        field.tick();
+        assertTrue(field.getLost());
+    }
 }

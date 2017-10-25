@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class Field  implements ITickable {
+public class Field implements ITickable {
     private HashMap<Point, Entity> entities;
     private int width;
     private int height;

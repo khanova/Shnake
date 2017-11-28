@@ -3,9 +3,11 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Snake extends Entity {
     private List<Point> body;
     private int direction;
+    private Point head;
 
 
     public Snake(Point pos, int dir, Field field) {
@@ -39,15 +41,19 @@ public class Snake extends Entity {
 
 
     public void tick(Game game) {
-        Point head = position.add(Point.OFFSET[direction]);
+        if (!game.isEvalTick())
+            return;
+
+        head = position.add(Point.OFFSET[direction]);
         boolean spawnApple = false;
         if (!(game.field.isInside(head))) {
             game.powerUp.outOfField(game);
         }
+        head = game.field.wrapPoint(head);
         Entity entity = game.field.entityAtPoint(head);
 
         if (entity instanceof Snake) {
-            game.powerUp.crash(game);
+            game.powerUp.crush(game);
         }
 
         if (entity instanceof Apple) {
@@ -87,8 +93,6 @@ public class Snake extends Entity {
                 body.remove(body.size() - 1);
             }
         }
-        Point head = position.add(Point.OFFSET[direction]);
-
         body.add(0, head);
         position = head;
     }

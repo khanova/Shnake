@@ -9,6 +9,8 @@ public class Game {
     protected PowerUp powerUp;
     private boolean lost;
     private int points;
+    private int speed;
+    private int tickCount;
 
     public Game(Field field) {
         powerUp = new PowerUp();
@@ -16,6 +18,8 @@ public class Game {
         lost = false;
         points = 0;
         growth = 0;
+        speed = 1;
+        tickCount = 0;
     }
 
     public boolean setDirection(int dir) {
@@ -29,6 +33,8 @@ public class Game {
     }
 
     public void tick() {
+        ++tickCount;
+        powerUp.tick(this);
         field.tick(this);
     }
 
@@ -66,7 +72,12 @@ public class Game {
     }
 
     public void outOfField() {
-        lose();
+        if (field.getWrap()) {
+
+        }
+        else {
+            lose();
+        }
     }
 
     protected void lose() {
@@ -83,5 +94,13 @@ public class Game {
 
     public void addGrowth(int i) {
         growth += i;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean isEvalTick() {
+        return tickCount % speed == 0;
     }
 }

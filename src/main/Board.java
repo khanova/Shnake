@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.event.KeyEvent.*;
+import static java.util.Collections.reverse;
 
 public class Board extends JPanel implements ActionListener {
     private static final int[] directions = new int[]{VK_RIGHT, VK_DOWN, VK_LEFT, VK_UP};
@@ -53,17 +54,20 @@ public class Board extends JPanel implements ActionListener {
         List<Entity> allEntities = game.field.getAllEntities();
         List<Sprite> newSprites = new ArrayList<>();
         List<Entity> accountedEntities = new ArrayList<>();
-        for (Sprite sprite: sprites) {
+        /*for (Sprite sprite: sprites) {
             accountedEntities.add(sprite.entity);
             if (allEntities.contains(sprite.getEntity())) {
                 newSprites.add(sprite);
             }
         }
+        */
         for (Entity entity: allEntities) {
             if (!accountedEntities.contains(entity)) {
                 newSprites.add(entity.createSprite());
             }
         }
+
+        reverse(newSprites);
         sprites = newSprites;
     }
 

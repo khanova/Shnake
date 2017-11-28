@@ -10,9 +10,9 @@ public class Field implements ITickable {
     private HashMap<Point, Entity> entities;
     private int width;
     private int height;
-    private boolean wrap;
 
     private Random random;
+    private boolean wrap;
 
     public Field(int width, int height, boolean wrap) {
         this.width = width;
@@ -28,10 +28,6 @@ public class Field implements ITickable {
 
     public int getHeight() {
         return height;
-    }
-
-    public boolean getWrap() {
-        return wrap;
     }
 
     public boolean isInside(Point point) {
@@ -166,4 +162,7 @@ public class Field implements ITickable {
         return result;
     }
 
+    public boolean getWrap() {
+        return wrap;
+    }
 }

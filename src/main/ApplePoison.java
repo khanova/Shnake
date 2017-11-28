@@ -6,8 +6,10 @@ public class ApplePoison extends Apple {
     }
 
     public void eatEffect(Game game) {
-        game.addGrowth(-1);
-        game.addPoints(-2);
+        game.addGrowth(0);
+        game.addPoints(0);
+        game.setSpeed(1);
+        game.powerUp = new WrongDirectionPowerUp();
     }
 
     public void tick(Game game) {
@@ -15,6 +17,6 @@ public class ApplePoison extends Apple {
 
     @Override
     public Sprite createSprite() {
-        return new ApplePoisonSprite(this);
+        return new AppleSprite(this, (textureManager -> textureManager.getApplePoison()));
     }
 }

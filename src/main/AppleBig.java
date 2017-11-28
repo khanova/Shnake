@@ -24,6 +24,6 @@ public class AppleBig extends Apple {
 
     @Override
     public Sprite createSprite() {
-        return new AppleBigSprite(this);
+        return new AppleSprite(this, (textureManager -> textureManager.getAppleBig()));
     }
 }

@@ -15,6 +15,8 @@ public class Apple extends Entity {
             new ArrayList<BiFunction<Point, Field, Apple>>(){{
                 add(Apple::new);
                 add(AppleBig::new);
+                add(Balloon::new);
+                add(AppleSpeed::new);
             }};
 
     public static Apple randomApple(Random random, Point pos, Field field) {
@@ -35,6 +37,6 @@ public class Apple extends Entity {
 
     @Override
     public Sprite createSprite() {
-        return new AppleSprite(this);
+        return new AppleSprite(this, (textureManager -> textureManager.getApple()));
     }
 }

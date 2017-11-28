@@ -12,6 +12,6 @@ public class Wall extends Apple {
 
     @Override
     public Sprite createSprite() {
-        return new WallSprite(this);
+        return new AppleSprite(this, (textureManager -> textureManager.getWall()));
     }
 }

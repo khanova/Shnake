@@ -5,7 +5,7 @@ public class PowerUp {
         game.outOfField();
     }
 
-    void crash(Game game) {
+    void crush(Game game) {
         game.lose();
     }
 

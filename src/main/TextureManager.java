@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TextureManager {
-    private Image head, body, apple, appleBig, grass, applePoison, wall;
+    private Image head, body, apple, appleBig, grass, applePoison, wall, balloon, rainbow;
 
     public TextureManager() {
         ImageIcon ii = new ImageIcon("src/images/head.png");
@@ -21,6 +21,10 @@ public class TextureManager {
         applePoison = ii.getImage();
         ii = new ImageIcon("src/images/wall.png");
         wall = ii.getImage();
+        ii = new ImageIcon("src/images/balloons.png");
+        balloon = ii.getImage();
+        ii = new ImageIcon("src/images/rainbow.png");
+        rainbow = ii.getImage();
     }
 
     public Image getHead() {
@@ -46,4 +50,10 @@ public class TextureManager {
     public Image getApplePoison() { return applePoison; }
 
     public Image getWall() {return wall;}
+
+    public Image getBalloon() {return balloon;}
+
+    public Image getRainbow() {
+        return rainbow;
+    }
 }

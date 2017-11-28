@@ -12,9 +12,6 @@ public class Field implements ITickable {
     private int height;
     private boolean wrap;
 
-    private int points;
-    private boolean lost;
-
     private Random random;
 
     public Field(int width, int height, boolean wrap) {
@@ -22,8 +19,6 @@ public class Field implements ITickable {
         this.height = height;
         this.wrap = wrap;
         entities = new HashMap<>();
-        points = 0;
-        lost = false;
         random = new Random();
     }
 
@@ -37,20 +32,6 @@ public class Field implements ITickable {
 
     public boolean getWrap() {
         return wrap;
-    }
-
-    public int getPoints() { return points; }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public boolean getLost() {
-        return lost;
-    }
-
-    public void lose() {
-        lost = true;
     }
 
     public boolean isInside(Point point) {
@@ -68,11 +49,11 @@ public class Field implements ITickable {
         return new Point(x, y);
     }
 
-    public void tick() {
+    public void tick(Game game) {
         List<Entity> allEntities = new ArrayList<>();
         allEntities.addAll(entities.values());
         for (Entity entity: allEntities) {
-            entity.tick();
+            entity.tick(game);
         }
     }
 
@@ -184,4 +165,5 @@ public class Field implements ITickable {
         }
         return result;
     }
+
 }

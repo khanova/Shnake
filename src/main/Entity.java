@@ -26,7 +26,7 @@ abstract public class Entity implements ITickable {
         return position.getY();
     }
 
-    abstract public void tick();
+    abstract public void tick(Game game);
 
     abstract public Sprite createSprite();
 }

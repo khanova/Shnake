@@ -1,5 +1,5 @@
 package main;
 
 public interface ITickable {
-    void tick();
+    void tick(Game game);
 }

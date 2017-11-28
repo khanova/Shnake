@@ -5,12 +5,12 @@ public class ApplePoison extends Apple {
         super(pos, field);
     }
 
-    public void eatEffect(Snake snake) {
-        snake.setGrowth(snake.getGrowth() - 1);
-        field.setPoints(field.getPoints() - 2);
+    public void eatEffect(Game game) {
+        game.addGrowth(-1);
+        game.addPoints(-2);
     }
 
-    public void tick() {
+    public void tick(Game game) {
     }
 
     @Override

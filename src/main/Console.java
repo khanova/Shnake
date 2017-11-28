@@ -33,25 +33,25 @@ public class Console {
 
 
     public static void main(String[] args) {
-        Field field = new Field(5, 5, true);
-        Snake snake = field.spawnSnake(new Point(1, 2), 0);
-        field.spawnRandomApple();
-        printField(field);
+        Game game = new Game( new Field(5, 5, true));
+        game.spawnSnake(new Point(1, 2), 0);
+        game.spawnRandomApple();
+        printField(game.field);
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                field.tick();
-                if (field.getLost())
+                game.tick();
+                if (game.getLost())
                     timer.cancel();
 
-                printField(field);
+                printField(game.field);
             }
         }, 1000, 1000);
 
         int code;
-        while (!field.getLost()) {
+        while (!game.getLost()) {
             try {
                 code = System.in.read();
             } catch (IOException e) {
@@ -62,7 +62,7 @@ public class Console {
                 char c = (char) code;
                 for (int i = 0; i < directions.length(); ++i){
                     if (directions.charAt(i) == c) {
-                        snake.setDirection(i);
+                        game.setDirection(i);
                     }
                 }
             }

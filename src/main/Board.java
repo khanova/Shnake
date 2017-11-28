@@ -20,9 +20,8 @@ public class Board extends JPanel implements ActionListener {
 
     private TextureManager textureManager;
     private List<Sprite> sprites;
-    private Snake snake;
-    private Field field;
     private Timer timer;
+    private Game game;
 
     public Board() {
         addKeyListener(new TAdapter());
@@ -35,23 +34,23 @@ public class Board extends JPanel implements ActionListener {
     private void initBoard() {
         tileWidth = 100;
         tileHeight = 100;
+        game = new Game(new Field(5,5, true));
 
-        field = new Field(5, 5, true);
-        snake = field.spawnSnake(new Point(0, 0), 0);
+        game.spawnSnake(new Point(0, 0), 0);
 
-        field.spawnApple(new Point(2, 2), Wall::new);
+        game.spawnApple(new Point(2, 2), Wall::new);
 
-        field.spawnRandomApple();
+        game.spawnRandomApple();
         textureManager = new TextureManager();
         sprites = new ArrayList<>();
 
         timer = new Timer(DELAY, this);
         timer.start();
-        setPreferredSize(new Dimension(tileWidth * field.getWidth(), tileHeight * field.getHeight()));
+        setPreferredSize(new Dimension(tileWidth * game.getWidth(), tileHeight * game.getHeight()));
     }
 
     private void updateSprites() {
-        List<Entity> allEntities = field.getAllEntities();
+        List<Entity> allEntities = game.field.getAllEntities();
         List<Sprite> newSprites = new ArrayList<>();
         List<Entity> accountedEntities = new ArrayList<>();
         for (Sprite sprite: sprites) {
@@ -75,15 +74,15 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (!field.getLost()) {
+        if (!game.getLost()) {
             doDrawing(g);
         }
     }
 
     private void doDrawing(Graphics g) {
         updateSprites();
-        for (int x = 0; x < field.getWidth(); x++) {
-            for (int y = 0; y < field.getHeight(); y++) {
+        for (int x = 0; x < game.getWidth(); x++) {
+            for (int y = 0; y < game.getHeight(); y++) {
                 drawImage(textureManager.getGrass(), x, y, g);
             }
         }
@@ -98,7 +97,7 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        field.tick();
+        game.tick();
         repaint();
     }
 
@@ -109,7 +108,7 @@ public class Board extends JPanel implements ActionListener {
 
             for (int i = 0; i < directions.length; ++i) {
                     if (directions[i] == key) {
-                        snake.setDirection(i);
+                        game.setDirection(i);
                     }
                 }
         }

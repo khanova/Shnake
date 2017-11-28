@@ -1,12 +1,9 @@
 package main;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class Apple extends Entity {
     public Apple(Point pos, Field field) {
@@ -27,12 +24,12 @@ public class Apple extends Entity {
 
     protected Field field;
 
-    public void eatEffect(Snake snake) {
-        snake.setGrowth(snake.getGrowth() + 1);
-        field.setPoints(field.getPoints() + 1);
+    public void eatEffect(Game game) {
+        game.addGrowth(1);
+        game.addPoints(1);
     }
 
-    public void tick() {
+    public void tick(Game game) {
 
     }
 

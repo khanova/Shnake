@@ -6,8 +6,8 @@ public class Wall extends Apple {
     }
 
     @Override
-    public void eatEffect(Snake snake) {
-        field.lose();
+    public void eatEffect(Game game) {
+        game.lose();
     }
 
     @Override

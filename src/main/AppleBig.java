@@ -9,12 +9,12 @@ public class AppleBig extends Apple {
     private static final int MAX_TICK = 5;
     private int ticks;
 
-    public void eatEffect(Snake snake) {
-        snake.setGrowth(snake.getGrowth() + 2);
-        field.setPoints(field.getPoints() + 2);
+    public void eatEffect(Game game) {
+        game.addGrowth(2);
+        game.addPoints(2);
     }
 
-    public void tick() {
+    public void tick(Game game) {
         ticks++;
         if (ticks == MAX_TICK) {
             field.removeEntity(this);

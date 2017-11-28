@@ -35,8 +35,7 @@ public class Game {
     void eatApple(Apple apple) {
         field.removeEntity(apple);
         apple.eatEffect(this);
-        field.spawnRandomApple();
-    }
+   }
 
     public int getGrowth() {
         return growth;

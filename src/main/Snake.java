@@ -40,6 +40,7 @@ public class Snake extends Entity {
 
     public void tick(Game game) {
         Point head = position.add(Point.OFFSET[direction]);
+        boolean spawnApple = false;
         if (!(game.field.isInside(head))) {
             game.powerUp.outOfField(game);
         }
@@ -48,10 +49,14 @@ public class Snake extends Entity {
         if (entity instanceof Snake) {
             game.powerUp.crash(game);
         }
-        else if (entity instanceof Apple) {
+
+        if (entity instanceof Apple) {
+            spawnApple = true;
             game.powerUp.eatApple(game, (Apple) entity);
         }
         game.powerUp.grow(game);
+        if (spawnApple)
+            game.spawnRandomApple();
     }
 
     public boolean isOccupied(Point pos) {

@@ -1,11 +1,15 @@
-package main;
+package main.Objects;
+
+import main.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class Apple extends Entity {
+public abstract class Apple extends Entity implements Edible {
+    protected Field field;
+
     public Apple(Point pos, Field field) {
         position = pos;
         this.field = field;
@@ -13,7 +17,7 @@ public class Apple extends Entity {
 
     private final static List<BiFunction<Point, Field, Apple>> appleTypes =
             new ArrayList<BiFunction<Point, Field, Apple>>(){{
-                add(Apple::new);
+                add(AppleSimple::new);
                 add(AppleBig::new);
                 add(Balloon::new);
                 add(AppleSpeed::new);
@@ -24,19 +28,7 @@ public class Apple extends Entity {
         return appleTypes.get(choice).apply(pos, field);
     }
 
-    protected Field field;
-
-    public void eatEffect(Game game) {
-        game.addGrowth(1);
-        game.addPoints(1);
-    }
-
     public void tick(Game game) {
 
-    }
-
-    @Override
-    public Sprite createSprite() {
-        return new AppleSprite(this, (textureManager -> textureManager.getApple()));
     }
 }

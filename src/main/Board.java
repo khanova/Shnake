@@ -1,5 +1,8 @@
 package main;
 
+import main.Objects.Wall;
+import main.Sprites.Sprite;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,10 +17,9 @@ import static java.util.Collections.reverse;
 
 public class Board extends JPanel implements ActionListener {
     private static final int[] directions = new int[]{VK_RIGHT, VK_DOWN, VK_LEFT, VK_UP};
-    private static final int DELAY = 500;
-
-    private int tileWidth;
-    private int tileHeight;
+    private static final int DELAY = 250;
+    private static final int tileWidth = 100;
+    private static final int tileHeight = 100;
 
     private TextureManager textureManager;
     private List<Sprite> sprites;
@@ -33,13 +35,14 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void initBoard() {
-        tileWidth = 100;
-        tileHeight = 100;
-        game = new Game(new Field(5,5, true));
+        game = new Game(new Field(7,7, true), 2);
 
         game.spawnSnake(new Point(0, 0), 0);
 
-        game.spawnApple(new Point(2, 2), Wall::new);
+        game.spawnWall(new Point(1, 3));
+        game.spawnWall(new Point(3, 1));
+        game.spawnWall(new Point(5, 3));
+        game.spawnWall(new Point(3, 5));
 
         game.spawnRandomApple();
         textureManager = new TextureManager();
@@ -51,7 +54,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void updateSprites() {
-        List<Entity> allEntities = game.field.getAllEntities();
+        List<Entity> allEntities = game.getField().getAllEntities();
         List<Sprite> newSprites = new ArrayList<>();
         List<Entity> accountedEntities = new ArrayList<>();
         /*for (Sprite sprite: sprites) {

@@ -1,5 +1,7 @@
 package main;
 
+import main.Objects.Apple;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
@@ -28,15 +30,11 @@ public class Console {
         }
     }
 
-
-
-
-
     public static void main(String[] args) {
-        Game game = new Game( new Field(5, 5, true));
+        Game game = new Game( new Field(5, 5, true), 1);
         game.spawnSnake(new Point(1, 2), 0);
         game.spawnRandomApple();
-        printField(game.field);
+        printField(game.getField());
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -46,7 +44,7 @@ public class Console {
                 if (game.getLost())
                     timer.cancel();
 
-                printField(game.field);
+                printField(game.getField());
             }
         }, 1000, 1000);
 

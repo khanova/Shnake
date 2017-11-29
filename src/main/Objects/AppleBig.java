@@ -1,4 +1,8 @@
-package main;
+package main.Objects;
+
+import main.*;
+import main.Sprites.StationarySprite;
+import main.Sprites.Sprite;
 
 public class AppleBig extends Apple {
     public AppleBig(Point pos, Field field) {
@@ -6,7 +10,7 @@ public class AppleBig extends Apple {
         ticks = 0;
     }
 
-    private static final int MAX_TICK = 5;
+    private static final int MAX_TICK = 15;
     private int ticks;
 
     public void eatEffect(Game game) {
@@ -17,13 +21,13 @@ public class AppleBig extends Apple {
     public void tick(Game game) {
         ticks++;
         if (ticks == MAX_TICK) {
-            field.removeEntity(this);
-            field.addEntity(new ApplePoison(position, field));
+            game.removeEntity(this);
+            game.addEntity(new ApplePoison(position, field));
         }
     }
 
     @Override
     public Sprite createSprite() {
-        return new AppleSprite(this, (textureManager -> textureManager.getAppleBig()));
+        return new StationarySprite(this, TextureManager::getAppleBig);
     }
 }

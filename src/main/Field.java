@@ -1,12 +1,15 @@
 package main;
 
+import main.Objects.Apple;
+import main.Objects.Wall;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class Field implements ITickable {
+public class Field implements Tickable {
     private HashMap<Point, Entity> entities;
     private int width;
     private int height;
@@ -46,10 +49,13 @@ public class Field implements ITickable {
     }
 
     public void tick(Game game) {
-        List<Entity> allEntities = new ArrayList<>();
-        allEntities.addAll(entities.values());
-        for (Entity entity: allEntities) {
+        for (Entity entity: getAllSnakes()) {
             entity.tick(game);
+        }
+        for (Entity entity: getAllEntities()) {
+            if (!(entity instanceof Snake)) {
+                entity.tick(game);
+            }
         }
     }
 
@@ -115,6 +121,14 @@ public class Field implements ITickable {
         Apple apple = init.apply(position, this);
         addEntity(apple);
         return apple;
+    }
+
+    public Wall spawnWall(Point position) {
+        if (!isInside(position) || hasEntityAtPoint(position))
+            throw new IllegalArgumentException();
+        Wall wall = new Wall(position);
+        addEntity(wall);
+        return wall;
     }
 
     public Apple spawnRandomApple() {

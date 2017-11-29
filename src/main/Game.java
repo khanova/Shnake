@@ -1,24 +1,28 @@
 package main;
 
+import main.Objects.Apple;
+import main.Objects.Wall;
+import main.PowerUps.PowerUp;
+
 import java.util.function.BiFunction;
 
 public class Game {
-    public Field field;
-    public Snake snake;
+    private Field field;
+    private Snake snake;
     private int growth;
-    protected PowerUp powerUp;
+    private PowerUp powerUp;
     private boolean lost;
     private int points;
     private int speed;
     private int tickCount;
 
-    public Game(Field field) {
+    public Game(Field field, int speed) {
         powerUp = new PowerUp();
         this.field = field;
         lost = false;
         points = 0;
         growth = 0;
-        speed = 1;
+        this.speed = speed;
         tickCount = 0;
     }
 
@@ -32,16 +36,37 @@ public class Game {
         return true;
     }
 
+    public int getDirection() { return snake.getDirection(); }
+
     public void tick() {
         ++tickCount;
         powerUp.tick(this);
         field.tick(this);
     }
 
-    void eatApple(Apple apple) {
+    public void eatApple(Apple apple) {
         field.removeEntity(apple);
         apple.eatEffect(this);
-   }
+    }
+
+    public void eatWall() {
+        getPowerUp().eatWall(this);
+    }
+
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+
+    public void setPowerUp(PowerUp powerUp)
+    {
+        this.powerUp.finish(this);
+        this.powerUp = powerUp;
+        powerUp.start(this);
+    }
+
+    public Field getField() { return field; }
+
+    public Snake getSnake() { return snake; }
 
     public int getGrowth() {
         return growth;
@@ -59,28 +84,32 @@ public class Game {
         return field.getHeight();
     }
 
-    public void spawnSnake(Point point, int i) {
-        snake = field.spawnSnake(point, i);
+    public Snake spawnSnake(Point position, int i) {
+        snake = field.spawnSnake(position, i);
+        return snake;
     }
 
-    public void spawnApple(Point point, BiFunction<Point, Field, Apple> aNew) {
-        field.spawnApple(point, aNew);
+    public Apple spawnApple(Point position, BiFunction<Point, Field, Apple> aNew) {
+        return field.spawnApple(position, aNew);
     }
+
+    public Wall spawnWall(Point position) { return field.spawnWall(position); }
 
     public void spawnRandomApple() {
         field.spawnRandomApple();
     }
 
-    public void outOfField() {
-        if (field.getWrap()) {
+    public void addEntity(Entity entity) { field.addEntity(entity); }
 
-        }
-        else {
+    public void removeEntity(Entity entity) { field.removeEntity(entity); }
+
+    public void outOfField() {
+        if (!field.getWrap()) {
             lose();
         }
     }
 
-    protected void lose() {
+    public void lose() {
         lost = true;
     }
 
@@ -91,6 +120,8 @@ public class Game {
     public void addPoints(int i) {
         points += i;
     }
+
+    public int getPoints() { return points; }
 
     public void addGrowth(int i) {
         growth += i;

@@ -1,4 +1,7 @@
-package main;
+package main.Sprites;
+
+import main.Board;
+import main.Entity;
 
 import java.awt.*;
 
@@ -10,5 +13,5 @@ abstract public class Sprite {
         return entity;
     }
 
-    abstract void draw(Graphics g, Board board);
+    public abstract void draw(Graphics g, Board board);
 }

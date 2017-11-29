@@ -1,9 +1,11 @@
 package main;
 
+import main.Sprites.Sprite;
+
 import java.util.List;
 import java.util.ArrayList;
 
-abstract public class Entity implements ITickable {
+abstract public class Entity implements Tickable {
     protected Point position;
 
     public Point getPosition() {

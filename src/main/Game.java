@@ -28,12 +28,7 @@ public class Game {
 
     public boolean setDirection(int dir) {
         dir = powerUp.getDirection(dir);
-        if (!(0 <= dir && dir < 4))
-            throw new IllegalArgumentException();
-        if ((snake.getDirection() + 2) % 4 == dir)
-            return false;
-        snake.setDirection(dir);
-        return true;
+        return snake.setDirection(dir);
     }
 
     public int getDirection() { return snake.getDirection(); }

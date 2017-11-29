@@ -2,6 +2,7 @@ package main.PowerUps;
 
 import main.Objects.Apple;
 import main.Game;
+import main.Point;
 import main.Snake;
 
 public class PowerUp {
@@ -23,10 +24,10 @@ public class PowerUp {
         game.eatApple(apple);
     }
 
-    public void grow(Game game) {
+    public void grow(Game game, Point newPosition) {
         Snake snake = game.getSnake();
         game.removeEntity(snake);
-        snake.grow(game.getGrowth());
+        snake.grow(game.getGrowth(), newPosition);
         if (game.getGrowth() <= 0)
             game.setGrowth(0);
         else

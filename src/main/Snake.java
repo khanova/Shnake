@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Snake extends Entity {
     private List<Point> body;
-    private Point head;
     private int direction;
     private int prevDirection;
 
@@ -23,6 +22,8 @@ public class Snake extends Entity {
         direction = dir;
         prevDirection = dir;
     }
+
+    public Point getHead() { return position; }
 
     @Override
     public List<Point> allPositions() {
@@ -48,19 +49,19 @@ public class Snake extends Entity {
         if (!game.isEvalTick())
             return;
 
-        head = position.add(Point.OFFSET[direction]);
+        Point newPosition = position.add(Point.OFFSET[direction]);
         boolean spawnApple = false;
-        if (!(game.getField().isInside(head))) {
+        if (!(game.getField().isInside(newPosition))) {
             game.getPowerUp().outOfField(game);
         }
-        head = game.getField().wrapPoint(head);
-        Entity eaten = game.getField().entityAtPoint(head);
+        newPosition = game.getField().wrapPoint(newPosition);
+        Entity eaten = game.getField().entityAtPoint(newPosition);
 
         if (eaten instanceof Snake) {
             boolean canEatTail = game.getGrowth() == 0;
             int lim = canEatTail ? body.size() - 1 : body.size();
             for (int i = 0; i < lim; ++i) {
-                if (head.equals(body.get(i))) {
+                if (newPosition.equals(body.get(i))) {
                     game.getPowerUp().eatYourself(game);
                     break;
                 }
@@ -74,7 +75,7 @@ public class Snake extends Entity {
             ((Wall) eaten).eatEffect(game);
         }
 
-        game.getPowerUp().grow(game);
+        game.getPowerUp().grow(game, newPosition);
         if (spawnApple)
             game.spawnRandomApple();
 
@@ -103,20 +104,23 @@ public class Snake extends Entity {
         return new SnakeSprite(this);
     }
 
-    public void grow(int growth) {
+    public void grow(int growth, Point newPosition) {
         if (growth <= 0) {
             for (int i = 0; i < 1 - growth && body.size() > 0; i++) {
                 body.remove(body.size() - 1);
             }
         }
-        body.add(0, head);
-        position = head;
+        body.add(0, newPosition);
+        position = newPosition;
     }
 
-    public void setDirection(int direction) {
-        if ((direction + 2) % 4 != prevDirection) {
-            this.direction = direction;
-        }
+    public boolean setDirection(int dir) {
+        if (!(0 <= dir && dir < 4))
+            throw new IllegalArgumentException();
+        if ((prevDirection + 2) % 4 == dir)
+            return false;
+        direction = dir;
+        return true;
     }
 
     public int getDirection() {

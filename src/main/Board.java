@@ -1,6 +1,5 @@
 package main;
 
-import main.Objects.Wall;
 import main.Sprites.Sprite;
 
 import javax.swing.*;
@@ -96,6 +95,7 @@ public class Board extends JPanel implements ActionListener {
         for (Sprite sprite: sprites) {
             sprite.draw(g, this);
         }
+        g.drawString("" + game.getPowerUp().getCounter(), 10, 10);
     }
 
     public void drawImage(Image image, int x, int y, Graphics g) {

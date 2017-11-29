@@ -41,7 +41,7 @@ public class PowerUp {
 
     public void tick(Game game) {
         --counter;
-        if (counter == 0) {
+        if (counter <= 0) {
             finish(game);
             game.setPowerUp(new PowerUp());
         }
@@ -53,5 +53,9 @@ public class PowerUp {
 
     public int getDirection(int dir) {
         return dir;
+    }
+
+    public int getCounter() {
+        return counter;
     }
 }

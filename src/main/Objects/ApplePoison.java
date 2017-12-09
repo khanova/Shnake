@@ -14,6 +14,12 @@ public class ApplePoison extends Apple {
         game.setPowerUp(new WrongDirectionPowerUp());
     }
 
+    public void eatEffectAuto(Game game) {
+        game.addGrowthAuto(1);
+        game.addPoints(1);
+        game.setPowerUp(new WrongDirectionPowerUp());
+    }
+
     public void tick(Game game) {
     }
 

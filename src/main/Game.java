@@ -9,19 +9,22 @@ import java.util.function.BiFunction;
 public class Game {
     private Field field;
     private Snake snake;
-    private int growth;
+    private AutoSnake autoSnake;
+    private int growthSnake;
+    private int growthAutoSnake;
     private PowerUp powerUp;
     private boolean lost;
     private int points;
     private int speed;
     private int tickCount;
 
+
     public Game(Field field, int speed) {
         powerUp = new PowerUp();
         this.field = field;
         lost = false;
         points = 0;
-        growth = 0;
+        growthSnake = 0;
         this.speed = speed;
         tickCount = 0;
     }
@@ -29,6 +32,7 @@ public class Game {
     public boolean setDirection(int dir) {
         dir = powerUp.getDirection(dir);
         return snake.setDirection(dir);
+
     }
 
     public int getDirection() { return snake.getDirection(); }
@@ -44,7 +48,16 @@ public class Game {
         apple.eatEffect(this);
     }
 
+    public void eatAppleAuto(Apple apple) {
+        field.removeEntity(apple);
+        apple.eatEffectAuto(this);
+    }
+
     public void eatWall() {
+        getPowerUp().eatWall(this);
+    }
+
+    public void eatWallAuto() {
         getPowerUp().eatWall(this);
     }
 
@@ -63,13 +76,21 @@ public class Game {
 
     public Snake getSnake() { return snake; }
 
-    public int getGrowth() {
-        return growth;
+    public AutoSnake getAutoSnake() { return autoSnake; }
+
+    public int getGrowthSnake() {
+        return growthSnake;
     }
 
-    public void setGrowth(int value) {
-        growth = value;
+    public int getGrowthAutoSnake() {
+        return growthAutoSnake;
     }
+
+    public void setGrowthSnake(int value) {
+        growthSnake = value;
+    }
+
+    public void setGrowthAutoSnake(int value) { growthAutoSnake = value; }
 
     public int getWidth() {
         return field.getWidth();
@@ -82,6 +103,11 @@ public class Game {
     public Snake spawnSnake(Point position, int i) {
         snake = field.spawnSnake(position, i);
         return snake;
+    }
+
+    public AutoSnake spawnAutoSnake(Point position, int i) {
+        autoSnake = field.spawnAutoSnake(position, i);
+        return autoSnake;
     }
 
     public Apple spawnApple(Point position, BiFunction<Point, Field, Apple> aNew) {
@@ -118,8 +144,10 @@ public class Game {
 
     public int getPoints() { return points; }
 
-    public void addGrowth(int i) {
-        growth += i;
+    public void addGrowth(int i) { growthSnake += i; }
+
+    public void addGrowthAuto(int i) {
+        growthAutoSnake += i;
     }
 
     public void setSpeed(int speed) {

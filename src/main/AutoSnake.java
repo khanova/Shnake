@@ -2,19 +2,18 @@ package main;
 
 import main.Objects.Apple;
 import main.Objects.Wall;
-import main.Sprites.SnakeSprite;
+import main.Sprites.AutoSnakeSprite;
 import main.Sprites.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Snake extends Entity {
+public class AutoSnake extends Entity{
     private List<Point> body;
     private int direction;
     private int prevDirection;
 
-    public Snake(Point pos, int dir, Field field) {
+    public AutoSnake(Point pos, int dir, Field field) {
         position = pos;
         body = new ArrayList<>();
         body.add(pos);
@@ -45,19 +44,21 @@ public class Snake extends Entity {
     }
 
     public void tick(Game game) {
-        if (!game.isEvalTick())
-            return;
+
+        direction = findDirection(game);
+
+        boolean spawnApple = false;
 
         Point newPosition = position.add(Point.OFFSET[direction]);
-        boolean spawnApple = false;
+
         if (!(game.getField().isInside(newPosition))) {
             game.getPowerUp().outOfField(game);
         }
         newPosition = game.getField().wrapPoint(newPosition);
         Entity eaten = game.getField().entityAtPoint(newPosition);
 
-        if (eaten instanceof Snake) {
-            boolean canEatTail = game.getGrowthSnake() == 0;
+        if (eaten instanceof AutoSnake) {
+            boolean canEatTail = game.getGrowthAutoSnake() == 0;
             int lim = canEatTail ? body.size() - 1 : body.size();
             for (int i = 0; i < lim; ++i) {
                 if (newPosition.equals(body.get(i))) {
@@ -67,21 +68,57 @@ public class Snake extends Entity {
             }
         }
 
-        if (eaten instanceof Apple) {
-            spawnApple = true;
-            game.getPowerUp().eatApple(game, (Apple) eaten);
-        }
-        if (eaten instanceof Wall) {
-            ((Wall) eaten).eatEffect(game);
+        if (eaten instanceof Snake) {
+            game.getPowerUp().eatYourself(game);
         }
 
-        game.getPowerUp().growSnake(game, newPosition);
+        if (eaten instanceof Apple) {
+            spawnApple = true;
+            game.getPowerUp().eatAppleAuto(game, (Apple) eaten);
+        }
+        if (eaten instanceof Wall) {
+            ((Wall) eaten).eatEffectAuto(game);
+        }
+
+        game.getPowerUp().growAutoSnake(game, newPosition);
         if (spawnApple)
             game.spawnRandomApple();
 
         prevDirection = direction;
+
     }
 
+    private int findDirection(Game game)
+    {
+        Point pos = position;
+        for (int i = 0; i < 4; i++)
+        {
+            if (game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof Snake)
+                return i;
+            pos = position;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof Apple)
+                return i;
+            pos = position;
+        }
+        if (!(game.getField().entityAtPoint(pos.add(Point.OFFSET[prevDirection])) instanceof Wall
+                || game.getField().entityAtPoint(pos.add(Point.OFFSET[prevDirection])) instanceof AutoSnake
+                || !(game.getField().isInside(pos.add(Point.OFFSET[prevDirection])))))
+            return prevDirection;
+        for (int i = 0; i < 4; i++)
+        {
+            if (!(game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof Wall
+                    || game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof AutoSnake
+                    || !(game.getField().isInside(pos.add(Point.OFFSET[i])))
+                    || prevDirection == (i + 2) % 4))
+                return i;
+            pos = position;
+        }
+        return 0;
+    }
     public boolean isOccupied(Point pos) {
         for (Point bodyPos: body) {
             if (pos.equals(bodyPos))
@@ -101,7 +138,7 @@ public class Snake extends Entity {
 
     @Override
     public Sprite createSprite() {
-        return new SnakeSprite(this);
+        return new AutoSnakeSprite(this);
     }
 
     public void grow(int growth, Point newPosition) {

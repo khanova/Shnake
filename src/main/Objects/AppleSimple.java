@@ -14,6 +14,11 @@ public class AppleSimple extends Apple {
         game.addPoints(1);
     }
 
+    public void eatEffectAuto(Game game) {
+        game.addGrowthAuto(1);
+        game.addPoints(1);
+    }
+
     public void tick(Game game) {
     }
 

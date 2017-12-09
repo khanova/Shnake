@@ -34,9 +34,10 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void initBoard() {
-        game = new Game(new Field(7,7, true), 2);
+        game = new Game(new Field(14,9, true), 2);
 
         game.spawnSnake(new Point(0, 0), 0);
+        game.spawnAutoSnake(new Point(0, 2), 0);
 
         game.spawnWall(new Point(1, 3));
         game.spawnWall(new Point(3, 1));

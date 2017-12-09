@@ -20,6 +20,10 @@ public class Wall extends Entity implements Edible {
         game.eatWall();
     }
 
+    public void eatEffectAuto(Game game) {
+        game.eatWallAuto();
+    }
+
     @Override
     public Sprite createSprite() {
         return new StationarySprite(this, TextureManager::getWall);

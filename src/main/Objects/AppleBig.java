@@ -18,6 +18,11 @@ public class AppleBig extends Apple {
         game.addPoints(2);
     }
 
+    public void eatEffectAuto(Game game) {
+        game.addGrowthAuto(2);
+        game.addPoints(2);
+    }
+
     public void tick(Game game) {
         ticks++;
         if (ticks == MAX_TICK) {

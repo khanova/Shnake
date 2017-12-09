@@ -115,6 +115,14 @@ public class Field implements Tickable {
         return snake;
     }
 
+    public AutoSnake spawnAutoSnake(Point position, int direction) {
+        if (!isInside(position) || hasEntityAtPoint(position))
+            throw new IllegalArgumentException();
+        AutoSnake autoSnake = new AutoSnake(position, direction, this);
+        addEntity(autoSnake);
+        return autoSnake;
+    }
+
     public Apple spawnApple(Point position, BiFunction<Point, Field, Apple> init) {
         if (!isInside(position) || hasEntityAtPoint(position))
             throw new IllegalArgumentException();

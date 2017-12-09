@@ -186,7 +186,7 @@ public class ShnakeUnitTest {
         Field field = new Field(4, 4, true);
         Game game = new Game(field, 1);
         Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        game.setGrowth(3);
+        game.setGrowthSnake(3);
         assertEquals(1, snake.length());
         game.tick();
         assertEquals(2, snake.length());
@@ -264,7 +264,7 @@ public class ShnakeUnitTest {
         Field field = new Field(3, 10, true);
         Game game = new Game(field, 1);
         Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        game.setGrowth(2);
+        game.setGrowthSnake(2);
         Apple apple = game.spawnApple(new Point(2, 0), Balloon::new);
         game.tick();
         game.tick();

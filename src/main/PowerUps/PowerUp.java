@@ -1,5 +1,6 @@
 package main.PowerUps;
 
+import main.AutoSnake;
 import main.Objects.Apple;
 import main.Game;
 import main.Point;
@@ -24,15 +25,30 @@ public class PowerUp {
         game.eatApple(apple);
     }
 
-    public void grow(Game game, Point newPosition) {
+    public void eatAppleAuto(Game game, Apple apple) {
+        game.eatAppleAuto(apple);
+    }
+
+    public void growSnake(Game game, Point newPosition) {
         Snake snake = game.getSnake();
         game.removeEntity(snake);
-        snake.grow(game.getGrowth(), newPosition);
-        if (game.getGrowth() <= 0)
-            game.setGrowth(0);
+        snake.grow(game.getGrowthSnake(), newPosition);
+        if (game.getGrowthSnake() <= 0)
+            game.setGrowthSnake(0);
         else
-            game.setGrowth(game.getGrowth() - 1);
+            game.setGrowthSnake(game.getGrowthSnake() - 1);
         game.addEntity(snake);
+    }
+
+    public void growAutoSnake(Game game, Point newPosition) {
+        AutoSnake autoSnake = game.getAutoSnake();
+        game.removeEntity(autoSnake);
+        autoSnake.grow(game.getGrowthAutoSnake(), newPosition);
+        if (game.getGrowthSnake() <= 0)
+            game.setGrowthAutoSnake(0);
+        else
+            game.setGrowthAutoSnake(game.getGrowthAutoSnake() - 1);
+        game.addEntity(autoSnake);
     }
 
     public void start(Game game) {

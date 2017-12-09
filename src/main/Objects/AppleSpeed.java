@@ -16,6 +16,12 @@ public class AppleSpeed extends Apple {
         game.setPowerUp(new SpeedPowerUp());
     }
 
+    public void eatEffectAuto(Game game) {
+        game.addGrowthAuto(1);
+        game.addPoints(1);
+        game.setPowerUp(new SpeedPowerUp());
+    }
+
     @Override
     public Sprite createSprite() {
         return new StationarySprite(this, TextureManager::getRainbow);

@@ -8,12 +8,13 @@ import main.Sprites.Sprite;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoSnake extends Entity{
+public class AutoSnake extends Snake{
     private List<Point> body;
     private int direction;
     private int prevDirection;
 
-    public AutoSnake(Point pos, int dir, Field field) {
+    public AutoSnake(Point pos, int dir) {
+        super(pos, dir);
         position = pos;
         body = new ArrayList<>();
         body.add(pos);
@@ -118,22 +119,6 @@ public class AutoSnake extends Entity{
             pos = position;
         }
         return 0;
-    }
-    public boolean isOccupied(Point pos) {
-        for (Point bodyPos: body) {
-            if (pos.equals(bodyPos))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean isIntersecting() {
-        for (Point point: getBody()) {
-            if (point.equals(position)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

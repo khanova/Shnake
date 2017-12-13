@@ -14,7 +14,7 @@ public class Snake extends Entity {
     private int direction;
     private int prevDirection;
 
-    public Snake(Point pos, int dir, Field field) {
+    public Snake(Point pos, int dir) {
         position = pos;
         body = new ArrayList<>();
         body.add(pos);

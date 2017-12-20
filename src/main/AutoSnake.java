@@ -10,13 +10,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-public class AutoSnake extends Entity{
+public class AutoSnake extends Snake{
     private List<Point> body;
     private int direction;
     private int prevDirection;
     private Random rand;
 
-    public AutoSnake(Point pos, int dir, Field field) {
+    public AutoSnake(Point pos, int dir) {
+        super(pos, dir);
         position = pos;
         body = new ArrayList<>();
         body.add(pos);
@@ -125,22 +126,6 @@ public class AutoSnake extends Entity{
         }
         int ind = rand.nextInt(dirs.size());
         return dirs.get(ind);
-    }
-    public boolean isOccupied(Point pos) {
-        for (Point bodyPos: body) {
-            if (pos.equals(bodyPos))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean isIntersecting() {
-        for (Point point: getBody()) {
-            if (point.equals(position)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

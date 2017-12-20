@@ -18,6 +18,6 @@ public class AutoSnakeSprite extends  Sprite{
         for (Point point: entity.getBody()) {
             board.drawImage(tm.getBody(), point.getX(), point.getY(), g);
         }
-        board.drawImage(tm.getHead(), entity.getX(), entity.getY(), g);
+        board.drawImage(tm.getHat(), entity.getX(), entity.getY(), g);
     }
 }

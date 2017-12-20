@@ -110,7 +110,7 @@ public class Field implements Tickable {
     public Snake spawnSnake(Point position, int direction) {
         if (!isInside(position) || hasEntityAtPoint(position))
             throw new IllegalArgumentException();
-        Snake snake = new Snake(position, direction, this);
+        Snake snake = new Snake(position, direction);
         addEntity(snake);
         return snake;
     }
@@ -118,7 +118,7 @@ public class Field implements Tickable {
     public AutoSnake spawnAutoSnake(Point position, int direction) {
         if (!isInside(position) || hasEntityAtPoint(position))
             throw new IllegalArgumentException();
-        AutoSnake autoSnake = new AutoSnake(position, direction, this);
+        AutoSnake autoSnake = new AutoSnake(position, direction);
         addEntity(autoSnake);
         return autoSnake;
     }

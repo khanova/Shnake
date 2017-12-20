@@ -1,5 +1,5 @@
 package test;
-/*
+
 import static org.junit.Assert.*;
 
 import main.*;
@@ -43,9 +43,7 @@ public class ShnakeUnitTest {
         assertEquals(4, field.getWidth());
         assertEquals(6, field.getHeight());
         assertTrue(field.getWrap());
-        Game game = new Game(field, 1);
-        assertFalse(game.getLost());
-        assertEquals(0, game.getPoints());
+        Game game = new Game(field);
     }
 
     @Test
@@ -84,198 +82,12 @@ public class ShnakeUnitTest {
         assertSame(apple, field.entityAtPoint(position));
     }
 
-
-    @Test
-    public void testFieldWithSnake() {
-        Field field = new Field(4, 6, false);
-        Snake snake = field.spawnSnake(new Point(2, 1), 0);
-        assertSame(snake, field.entityAtPoint(new Point(2, 1)));
-        assertEquals(new Point(2, 1), snake.getPosition());
-        assertTrue(snake.isOccupied(new Point(2, 1)));
-        assertFalse(snake.isOccupied(new Point(1, 2)));
-        assertFalse(snake.isIntersecting());
-    }
-
-    @Test
-    public void testMoveSnake() {
-        Field field = new Field(4, 6, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(2, 1), 0);
-        game.tick();
-        assertEquals(new Point(3, 1), snake.getPosition());
-        assertTrue(field.hasEntityAtPoint(new Point(3, 1)));
-        assertFalse(field.hasEntityAtPoint(new Point(2, 1)));
-        assertSame(snake, field.entityAtPoint(new Point(3, 1)));
-    }
-
-    @Test
-    public void testCrashIntoBorder() {
-        Field field = new Field(4, 6, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 1), 2);
-        game.tick();
-        assertTrue(game.getLost());
-    }
-
-    @Test
-    public void testWrapSnake() {
-        Field field = new Field(4, 6, true);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(1, 5), 1);
-        game.tick();
-        assertEquals(new Point(1, 0), snake.getPosition());
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertFalse(field.hasEntityAtPoint(new Point(1, 5)));
-        assertSame(snake, field.entityAtPoint(new Point(1, 0)));
-        assertFalse(game.getLost());
-    }
-
-    @Test
-    public void testEatApple() {
-        Field field = new Field(4, 6, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 3), 3);
-        Apple apple = game.spawnApple(new Point(0, 2), AppleSimple::new);
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(0, 2)));
-        assertTrue(field.hasEntityAtPoint(new Point(0, 3)));
-        assertSame(snake, field.entityAtPoint(new Point(0, 2)));
-        assertSame(snake, field.entityAtPoint(new Point(0, 3)));
-        assertEquals(new Point(0, 2), snake.getPosition());
-        assertEquals(1, game.getPoints());
-    }
-
     @Test
     public void testRotateSnake() {
         Field field = new Field(4, 6, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(1, 1), 0);
-        game.setDirection(1);
-        game.setDirection(3);
-        game.setDirection(2);
-        assertEquals(3, snake.getDirection());
-        game.tick();
-        assertEquals(new Point(1, 0), snake.getPosition());
-        assertEquals(3, snake.getDirection());
-    }
-
-    @Test
-    public void testEatAppleBig() {
-        Field field = new Field(10, 10, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        Apple apple = game.spawnApple(new Point(1, 0), AppleBig::new);
-        assertEquals(1, snake.length());
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertEquals(2, game.getPoints());
-        assertEquals(2, snake.length());
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(2, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(0, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(1, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(2, 0)));
-        assertEquals(3, snake.length());
-    }
-
-    @Test
-    public void testEatTail() {
-        Field field = new Field(4, 4, true);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        game.setGrowth(3);
-        assertEquals(1, snake.length());
-        game.tick();
-        assertEquals(2, snake.length());
-        game.tick();
-        assertEquals(3, snake.length());
-        game.tick();
-        assertEquals(4, snake.length());
-        game.tick();
-        assertEquals(4, snake.length());
-        assertFalse(game.getLost());
-        assertEquals(new Point(0, 0), snake.getPosition());
-    }
-
-    @Test
-    public void testEatApplePoison() {
-        Field field = new Field(20, 20, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        Apple apple = game.spawnApple(new Point(19, 0), AppleBig::new);
-        for (int i = 0; i < 18; ++i)
-            game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(18, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(19, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(18, 0)));
-        assertNotSame(snake, field.entityAtPoint(new Point(19, 0)));
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(19, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(19, 0)));
-        assertEquals(2, snake.length());
-        game.setDirection(3);
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(19, 1)));
-        assertSame(snake, field.entityAtPoint(new Point(19, 1)));
-        assertEquals(2, snake.length());
-    }
-
-    @Test
-    public void testEatWall() {
-        Field field = new Field(10, 10, false);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        Wall wall = game.spawnWall(new Point(1, 0));
-        game.tick();
-        assertTrue(game.getLost());
-    }
-
-    @Test
-    public void testEatAppleSpeed() {
-        Field field = new Field(10, 10, false);
-        Game game = new Game(field, 2);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        Apple apple = game.spawnApple(new Point(1, 0), AppleSpeed::new);
-        game.tick();
-        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(0, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertSame(apple, field.entityAtPoint(new Point(1, 0)));
-        game.tick();
-        assertEquals(2, snake.length());
-        assertTrue(field.hasEntityAtPoint(new Point(0, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(0, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(1, 0)));
-        game.tick();
-        assertEquals(2, snake.length());
-        assertFalse(field.hasEntityAtPoint(new Point(0, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(1, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(1, 0)));
-        assertTrue(field.hasEntityAtPoint(new Point(2, 0)));
-        assertSame(snake, field.entityAtPoint(new Point(2, 0)));
-    }
-
-    @Test
-    public void testEatBalloon() {
-        Field field = new Field(3, 10, true);
-        Game game = new Game(field, 1);
-        Snake snake = game.spawnSnake(new Point(0, 0), 0);
-        game.setGrowth(2);
-        Apple apple = game.spawnApple(new Point(2, 0), Balloon::new);
-        game.tick();
-        game.tick();
-        assertFalse(game.getLost());
-        assertEquals(3, snake.length());
-        game.tick();
-        assertFalse(game.getLost());
-        assertEquals(4, snake.length());
-        for (int i = 0; i < 20 && !game.getLost(); ++i)
-            game.tick();
-        assertTrue(game.getLost());
+        Game game = new Game(field);
+        Snake newSnake = new Snake(new Point(1, 1), 0, field);
+        field.spawnSnake(newSnake);
+        assertEquals(0, newSnake.getDirection());
     }
 }
-*/

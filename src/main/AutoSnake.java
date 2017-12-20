@@ -6,12 +6,15 @@ import main.Sprites.AutoSnakeSprite;
 import main.Sprites.Sprite;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 public class AutoSnake extends Entity{
     private List<Point> body;
     private int direction;
     private int prevDirection;
+    private Random rand;
 
     public AutoSnake(Point pos, int dir, Field field) {
         position = pos;
@@ -19,6 +22,7 @@ public class AutoSnake extends Entity{
         body.add(pos);
         direction = dir;
         prevDirection = dir;
+        rand = new Random();
     }
 
     public Point getHead() { return position; }
@@ -108,16 +112,19 @@ public class AutoSnake extends Entity{
                 || game.getField().entityAtPoint(pos.add(Point.OFFSET[prevDirection])) instanceof AutoSnake
                 || !(game.getField().isInside(pos.add(Point.OFFSET[prevDirection])))))
             return prevDirection;
+        ArrayList<Integer> dirs = new ArrayList<>();
+
         for (int i = 0; i < 4; i++)
         {
             if (!(game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof Wall
                     || game.getField().entityAtPoint(pos.add(Point.OFFSET[i])) instanceof AutoSnake
                     || !(game.getField().isInside(pos.add(Point.OFFSET[i])))
                     || prevDirection == (i + 2) % 4))
-                return i;
+                dirs.add(i);
             pos = position;
         }
-        return 0;
+        int ind = rand.nextInt(dirs.size());
+        return dirs.get(ind);
     }
     public boolean isOccupied(Point pos) {
         for (Point bodyPos: body) {

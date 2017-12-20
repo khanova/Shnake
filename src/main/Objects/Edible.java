@@ -1,7 +1,8 @@
 package main.Objects;
 
-import main.Game;
+import main.Snake;
 
 public interface Edible {
-    void eatEffect(Game game);
+    void eatEffect(Snake snake);
+    Integer getSpriteId();
 }

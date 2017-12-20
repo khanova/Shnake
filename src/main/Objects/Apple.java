@@ -2,12 +2,13 @@ package main.Objects;
 
 import main.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public abstract class Apple extends Entity implements Edible {
+public abstract class Apple extends Entity implements Edible, Serializable {
     protected Field field;
 
     public Apple(Point pos, Field field) {
@@ -31,4 +32,5 @@ public abstract class Apple extends Entity implements Edible {
     public void tick(Game game) {
 
     }
+
 }

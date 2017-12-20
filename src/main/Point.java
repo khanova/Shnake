@@ -1,6 +1,8 @@
 package main;
 
-public class Point {
+import java.io.Serializable;
+
+public class Point implements Serializable {
     static final Point[] OFFSET = {
             new Point(1, 0),
             new Point(0, 1),

@@ -1,21 +1,24 @@
 package main;
 
 import main.Objects.Apple;
+import main.Objects.Edible;
 import main.Objects.Wall;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class Field implements Tickable {
+public class Field implements Tickable, Serializable {
     private HashMap<Point, Entity> entities;
     private int width;
     private int height;
 
     private Random random;
     private boolean wrap;
+    private Snake mainSnake;
 
     public Field(int width, int height, boolean wrap) {
         this.width = width;
@@ -107,11 +110,17 @@ public class Field implements Tickable {
         return result;
     }
 
-    public Snake spawnSnake(Point position, int direction) {
-        if (!isInside(position) || hasEntityAtPoint(position))
+    public void spawnSnake(Snake snake) {
+        if (!isInside(snake.position) || hasEntityAtPoint(snake.position))
             throw new IllegalArgumentException();
-        Snake snake = new Snake(position, direction, this);
         addEntity(snake);
+    }
+
+    public Snake spawnRandomSnake(int id) {
+        Apple apple = spawnRandomApple();
+        removeEntity(apple);
+        Snake snake = new Snake(apple.position, id % 4, this);
+        spawnSnake(snake);
         return snake;
     }
 
@@ -176,7 +185,45 @@ public class Field implements Tickable {
         return result;
     }
 
+
+
     public boolean getWrap() {
         return wrap;
+    }
+
+    public Snake getMainSnake() {
+        return mainSnake;
+    }
+
+    public void setMainSnake(Snake mainSnake) {
+        this.mainSnake = mainSnake;
+    }
+
+    public List<List<Integer>> toSpritesId() {
+        List<List<Integer>> result = new ArrayList<>();
+        for (int x = 0; x < width; ++x) {
+            List<Integer> line = new ArrayList<>();
+            for (int y = 0; y < height; ++y) {
+                line.add(spriteId(new Point(x, y)));
+            }
+            result.add(line);
+        }
+        return result;
+    }
+
+    private Integer spriteId(Point p) {
+        Entity entity = entityAtPoint(p);
+        if (entity instanceof Edible)
+            return ((Edible)entity).getSpriteId();
+        if (entity instanceof Snake) {
+            if (!p.equals(entity.position)) {
+                return 1;
+            }
+            if (entity != mainSnake)
+                return 0;
+            else
+                return 0;
+        }
+        return 4;
     }
 }

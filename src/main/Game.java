@@ -4,89 +4,45 @@ import main.Objects.Apple;
 import main.Objects.Wall;
 import main.PowerUps.PowerUp;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 
 public class Game {
     private Field field;
-    private Snake snake;
-    private int growth;
-    private PowerUp powerUp;
-    private boolean lost;
-    private int points;
-    private int speed;
+    private int ready;
+    private ArrayList<Snake> snakes;
     private int tickCount;
 
-    public Game(Field field, int speed) {
-        powerUp = new PowerUp();
+    private Lock fieldLock;
+    private Lock readyCounterLock;
+    private Lock clientsCounterLock;
+    private int clientsCount;
+
+    public Game(Field field) {
         this.field = field;
-        lost = false;
-        points = 0;
-        growth = 0;
-        this.speed = speed;
+        clientsCount = 0;
         tickCount = 0;
+        ready = 0;
+        snakes = new ArrayList<>();
+        fieldLock = new ReentrantLock();
+        readyCounterLock = new ReentrantLock();
+        clientsCounterLock = new ReentrantLock();
     }
-
-    public boolean setDirection(int dir) {
-        dir = powerUp.getDirection(dir);
-        return snake.setDirection(dir);
-    }
-
-    public int getDirection() { return snake.getDirection(); }
 
     public void tick() {
+        if (getReady() == 0)
+            return;
+        System.out.println("tick...");
+        System.out.flush();
+        resetReady();
         ++tickCount;
-        powerUp.tick(this);
         field.tick(this);
     }
 
-    public void eatApple(Apple apple) {
-        field.removeEntity(apple);
-        apple.eatEffect(this);
-    }
-
-    public void eatWall() {
-        getPowerUp().eatWall(this);
-    }
-
-    public PowerUp getPowerUp() {
-        return powerUp;
-    }
-
-    public void setPowerUp(PowerUp powerUp)
-    {
-        this.powerUp.finish(this);
-        this.powerUp = powerUp;
-        powerUp.start(this);
-    }
-
     public Field getField() { return field; }
-
-    public Snake getSnake() { return snake; }
-
-    public int getGrowth() {
-        return growth;
-    }
-
-    public void setGrowth(int value) {
-        growth = value;
-    }
-
-    public int getWidth() {
-        return field.getWidth();
-    }
-
-    public int getHeight() {
-        return field.getHeight();
-    }
-
-    public Snake spawnSnake(Point position, int i) {
-        snake = field.spawnSnake(position, i);
-        return snake;
-    }
-
-    public Apple spawnApple(Point position, BiFunction<Point, Field, Apple> aNew) {
-        return field.spawnApple(position, aNew);
-    }
 
     public Wall spawnWall(Point position) { return field.spawnWall(position); }
 
@@ -98,35 +54,77 @@ public class Game {
 
     public void removeEntity(Entity entity) { field.removeEntity(entity); }
 
-    public void outOfField() {
-        if (!field.getWrap()) {
-            lose();
+    public Snake spawnRandomSnake(int id) {
+        fieldLock.lock();
+        try {
+            snakes.add(field.spawnRandomSnake(id));
+            return snakes.get(snakes.size() - 1);
+        }
+        finally {
+            fieldLock.unlock();
         }
     }
 
-    public void lose() {
-        lost = true;
+    public int getTickCount() {
+        return tickCount;
     }
 
-    public boolean getLost() {
-        return lost;
+    public int getReady() {
+        try {
+            readyCounterLock.lock();
+            return ready;
+        }
+        finally {
+            readyCounterLock.unlock();
+        }
     }
 
-    public void addPoints(int i) {
-        points += i;
+    public void incReady() {
+        ready += 1;
     }
 
-    public int getPoints() { return points; }
-
-    public void addGrowth(int i) {
-        growth += i;
+    public void resetReady() {
+        ready = 0;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public List<List<Integer>> getFieldWithMainSnake(Snake snake) {
+        fieldLock.lock();
+        try {
+            field.setMainSnake(snake);
+            return field.toSpritesId();
+        }
+        finally {
+            fieldLock.unlock();
+        }
     }
 
-    public boolean isEvalTick() {
-        return tickCount % speed == 0;
+    public int getClientsCount() {
+        clientsCounterLock.lock();
+        try {
+            return clientsCount;
+        }
+        finally {
+            clientsCounterLock.unlock();
+        }
+    }
+
+    public void incClientsCount() {
+        clientsCounterLock.lock();
+        try {
+            this.clientsCount++;
+        }
+        finally {
+            clientsCounterLock.unlock();
+        }
+    }
+
+    public void decClientsCount() {
+        clientsCounterLock.lock();
+        try {
+            this.clientsCount--;
+        }
+        finally {
+            clientsCounterLock.unlock();
+        }
     }
 }

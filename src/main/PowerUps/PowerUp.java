@@ -1,53 +1,56 @@
 package main.PowerUps;
 
+import main.Field;
 import main.Objects.Apple;
 import main.Game;
 import main.Point;
 import main.Snake;
 
-public class PowerUp {
+import java.io.Serializable;
+
+public class PowerUp implements Serializable {
     protected int counter;
 
-    public void outOfField(Game game) {
-        game.outOfField();
+    public void outOfField(Snake snake) {
+        snake.outOfField();
     }
 
-    public void eatYourself(Game game) {
-        game.lose();
+    public void eatSnake(Snake snake) {
+        snake.lose();
     }
 
-    public void eatWall(Game game) {
-        game.lose();
+    public void eatWall(Snake snake) {
+        snake.lose();
     }
 
-    public void eatApple(Game game, Apple apple) {
-        game.eatApple(apple);
+    public void eatApple(Snake snake, Apple apple) {
+        snake.eatApple(apple);
     }
 
-    public void grow(Game game, Point newPosition) {
-        Snake snake = game.getSnake();
-        game.removeEntity(snake);
-        snake.grow(game.getGrowth(), newPosition);
-        if (game.getGrowth() <= 0)
-            game.setGrowth(0);
+    public void grow(Snake snake, Point newPosition) {
+        Field field = snake.getField();
+        field.removeEntity(snake);
+        snake.grow(snake.getGrowth(), newPosition);
+        if (snake.getGrowth() <= 0)
+            snake.setGrowth(0);
         else
-            game.setGrowth(game.getGrowth() - 1);
-        game.addEntity(snake);
+            snake.setGrowth(snake.getGrowth() - 1);
+        field.addEntity(snake);
     }
 
-    public void start(Game game) {
+    public void start(Snake snake) {
 
     }
 
-    public void tick(Game game) {
+    public void tick(Snake snake) {
         --counter;
         if (counter <= 0) {
-            finish(game);
-            game.setPowerUp(new PowerUp());
+            finish(snake);
+            snake.setPowerUp(new PowerUp());
         }
     }
 
-    public void finish(Game game) {
+    public void finish(Snake snake) {
 
     }
 

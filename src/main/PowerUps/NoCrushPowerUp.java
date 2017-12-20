@@ -1,7 +1,6 @@
 package main.PowerUps;
 
-import main.Game;
-import main.PowerUps.PowerUp;
+import main.Snake;
 
 public class NoCrushPowerUp extends PowerUp {
     public NoCrushPowerUp() {
@@ -9,7 +8,7 @@ public class NoCrushPowerUp extends PowerUp {
     }
 
     @Override
-    public void eatYourself(Game game) {
+    public void eatSnake(Snake snake) {
 
     }
 }

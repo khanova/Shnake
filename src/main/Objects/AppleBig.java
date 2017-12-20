@@ -1,10 +1,8 @@
 package main.Objects;
 
 import main.*;
-import main.Sprites.StationarySprite;
-import main.Sprites.Sprite;
 
-public class AppleBig extends Apple {
+public class AppleBig extends Apple  {
     public AppleBig(Point pos, Field field) {
         super(pos, field);
         ticks = 0;
@@ -13,9 +11,8 @@ public class AppleBig extends Apple {
     private static final int MAX_TICK = 15;
     private int ticks;
 
-    public void eatEffect(Game game) {
-        game.addGrowth(2);
-        game.addPoints(2);
+    public void eatEffect(Snake snake) {
+        snake.addGrowth(2);
     }
 
     public void tick(Game game) {
@@ -26,8 +23,7 @@ public class AppleBig extends Apple {
         }
     }
 
-    @Override
-    public Sprite createSprite() {
-        return new StationarySprite(this, TextureManager::getAppleBig);
+    public Integer getSpriteId() {
+        return 3;
     }
 }

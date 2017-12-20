@@ -1,10 +1,8 @@
 package main;
 
 import main.Objects.Apple;
-import main.Objects.Edible;
 import main.Objects.Wall;
-import main.Sprites.SnakeSprite;
-import main.Sprites.Sprite;
+import main.PowerUps.PowerUp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +12,23 @@ public class Snake extends Entity {
     private List<Point> body;
     private int direction;
     private int prevDirection;
+    private PowerUp powerUp;
+    private boolean alive;
+    private int growth;
+    private Field field;
+    private int speed;
 
     public Snake(Point pos, int dir, Field field) {
+        powerUp = new PowerUp();
         position = pos;
         body = new ArrayList<>();
         body.add(pos);
         direction = dir;
         prevDirection = dir;
+        this.field = field;
+        alive = true;
+        growth = 0;
+        speed = 2;
     }
 
     public Point getHead() { return position; }
@@ -31,6 +39,23 @@ public class Snake extends Entity {
         result.addAll(body);
         return result;
     }
+
+    public Field getField() {
+        return field;
+    }
+
+    public int getGrowth() {
+        return growth;
+    }
+
+    public void setGrowth(int value) {
+        growth = value;
+    }
+
+    public void addGrowth(int i) {
+        growth += i;
+    }
+
 
     public int length()
     {
@@ -46,40 +71,60 @@ public class Snake extends Entity {
     }
 
     public void tick(Game game) {
-        if (!game.isEvalTick())
+        if (!alive)
+            return;
+        powerUp.tick(this);
+        if (!isEvalTick(game.getTickCount()))
             return;
 
         Point newPosition = position.add(Point.OFFSET[direction]);
         boolean spawnApple = false;
-        if (!(game.getField().isInside(newPosition))) {
-            game.getPowerUp().outOfField(game);
+        if (!(field.isInside(newPosition))) {
+            powerUp.outOfField(this);
         }
-        newPosition = game.getField().wrapPoint(newPosition);
-        Entity eaten = game.getField().entityAtPoint(newPosition);
+        newPosition = field.wrapPoint(newPosition);
+        Entity eaten = field.entityAtPoint(newPosition);
 
         if (eaten instanceof Snake) {
-            boolean canEatTail = game.getGrowth() == 0;
+            boolean canEatTail = getGrowth() == 0;
             int lim = canEatTail ? body.size() - 1 : body.size();
             for (int i = 0; i < lim; ++i) {
                 if (newPosition.equals(body.get(i))) {
-                    game.getPowerUp().eatYourself(game);
+                    powerUp.eatSnake(this);
                     break;
                 }
             }
         }
         if (eaten instanceof Apple) {
             spawnApple = true;
-            game.getPowerUp().eatApple(game, (Apple) eaten);
+            powerUp.eatApple(this, (Apple) eaten);
         }
         if (eaten instanceof Wall) {
-            ((Wall) eaten).eatEffect(game);
+            ((Wall) eaten).eatEffect(this);
         }
 
-        game.getPowerUp().grow(game, newPosition);
+        powerUp.grow(this, newPosition);
         if (spawnApple)
-            game.spawnRandomApple();
+            field.spawnRandomApple();
 
         prevDirection = direction;
+    }
+
+
+    public void eatApple(Apple apple) {
+        field.removeEntity(apple);
+        apple.eatEffect(this);
+    }
+
+
+    public void setPowerUp(PowerUp powerUp) {
+        this.powerUp.finish(this);
+        this.powerUp = powerUp;
+        powerUp.start(this);
+    }
+
+    public void eatWall(){
+        powerUp.eatWall(this);
     }
 
     public boolean isOccupied(Point pos) {
@@ -99,10 +144,12 @@ public class Snake extends Entity {
         return false;
     }
 
-    @Override
-    public Sprite createSprite() {
-        return new SnakeSprite(this);
+    public void outOfField() {
+        if (!field.getWrap()) {
+            lose();
+        }
     }
+
 
     public void grow(int growth, Point newPosition) {
         if (growth <= 0) {
@@ -115,6 +162,7 @@ public class Snake extends Entity {
     }
 
     public boolean setDirection(int dir) {
+        dir = powerUp.getDirection(dir);
         if (!(0 <= dir && dir < 4))
             throw new IllegalArgumentException();
         if ((prevDirection + 2) % 4 == dir)
@@ -125,5 +173,25 @@ public class Snake extends Entity {
 
     public int getDirection() {
         return direction;
+    }
+    public void lose() {
+        field.removeEntity(this);
+        alive = false;
+    }
+
+    public boolean getAlive() {
+        return alive;
+    }
+
+    public boolean isEvalTick(int tickCount) {
+        return tickCount % speed == 0;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 }

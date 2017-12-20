@@ -1,11 +1,6 @@
 package main.Objects;
 
-import main.Entity;
-import main.Game;
-import main.Point;
-import main.Sprites.StationarySprite;
-import main.Sprites.Sprite;
-import main.TextureManager;
+import main.*;
 
 public class Wall extends Entity implements Edible {
     public Wall(Point pos) {
@@ -16,12 +11,11 @@ public class Wall extends Entity implements Edible {
 
     }
 
-    public void eatEffect(Game game) {
-        game.eatWall();
+    public void eatEffect(Snake snake) {
+        snake.eatWall();
     }
 
-    @Override
-    public Sprite createSprite() {
-        return new StationarySprite(this, TextureManager::getWall);
+    public Integer getSpriteId() {
+        return 6;
     }
 }

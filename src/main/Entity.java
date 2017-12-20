@@ -1,11 +1,10 @@
 package main;
 
-import main.Sprites.Sprite;
-
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
-abstract public class Entity implements Tickable {
+abstract public class Entity implements Tickable, Serializable {
     protected Point position;
 
     public Point getPosition() {
@@ -30,5 +29,4 @@ abstract public class Entity implements Tickable {
 
     abstract public void tick(Game game);
 
-    abstract public Sprite createSprite();
 }
